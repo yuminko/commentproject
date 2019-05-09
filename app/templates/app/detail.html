@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h1> {{blog.title}}</h1>
+        <p> {{blog.body}}</p>
+        <br>
+        <a href="{% url 'comment' blog.id %}">new comment</a>
+        <a href="{% url 'blog' %}">돌아가기</a>
+
+    </div>
+    
+    {% for comment in app.comments.all %}
+    
+    {{ comment.created_date }}
+    
+    {% empty %}
+    <p>No comments here yet</p>
+    
+    {% endfor %}
+
+{% endblock %}
+
