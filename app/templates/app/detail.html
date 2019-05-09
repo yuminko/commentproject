@@ -6,17 +6,26 @@
         <h1> {{blog.title}}</h1>
         <p> {{blog.body}}</p>
         <br>
-        <a href="{% url 'comment' blog.id %}">new comment</a>
+        <a class ="btn-btn dark" href="{% url 'comment' blog.id %}">new comment</a>
         <a href="{% url 'blog' %}">돌아가기</a>
 
     </div>
+
+    {% for comment in blog.comments.all %}
+        <div class="flex">
+            <div class="date right">
+                {{ comment.created_date }}
+                <p>{{ comment.author }}</p>
+            </div>
+            <div class="left">
+                <strong>{{ comment.text|linebreaks }}</strong>
+            </div>
+        </div>
     
-    {% for comment in app.comments.all %}
     
-    {{ comment.created_date }}
     
     {% empty %}
-    <p>No comments here yet</p>
+        <p>No comments here yet</p>
     
     {% endfor %}
 

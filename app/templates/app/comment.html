@@ -1,21 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<br>
-<div class="container">
-	<form method="POST">
-    {% csrf_token %}
-    <div class = "form-group">
-      <table>
-          {{form.as_table}}
-      </table>
-    </div>
-	  <br>
-      <a href="{% url 'comment' blog.id %}">send</a>
-
+  <h1> New Comment</h1>
+  <form method ="POST" class="post-form">{% csrf_token %}
+      {{ form.as_p }}
+       <button type="submit" class="save btn btn-dafault">Send</button>
   </form>
-
-</div>
 
 {% endblock %}

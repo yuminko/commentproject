@@ -22,24 +22,11 @@ def detail(request, blog_id):
 def new(request):
     return render(request,'app/new.html')
 
-def comment(request, blog_id):
-    if request.method == 'Post':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.put_date = timezone.now()
-            comment.save()
-            return redirect ('detail')
-    else:
-        blog_detail = get_object_or_404(Blog,pk=blog_id)
-        form = CommentForm()
-        return render(request,'app/comment.html',{'blog':blog_detail, 'form':form})
-
 def create(request):
     blog = BLog()
     blog.title = request.GET['title']
     blog.body = request.GET['body']
-    blog.pub_date = timezone.datetime.now()
+    blog.pub_date = timezone.now()
     blog.save()
     return redirect('/blog/'+str(blog.id))
 
@@ -48,9 +35,23 @@ def blogpost(request):
         form = BlogPost(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.pub_date = timezone.now()
+            post.pub_date = timezone.datetime.now()
             post.save()
             return redirect ('blog')
     else:
         form = BlogPost()
         return render(request,'app/new.html',{'form':form})
+
+def comment(request, blog_id):
+        post = get_object_or_404(Blog, pk=blog_id)
+        if request.method == 'POST':
+           form = CommentForm(request.POST)
+           if form.is_valid():
+                comment = form.save(commit=False)
+                comment.post = post
+                #comment.created_date = timezone.datetime.now()
+                comment.save()
+                return redirect ('/' + str(post.id))   
+        else:
+            form = CommentForm()
+        return render(request,'app/comment.html',{ 'form':form})
